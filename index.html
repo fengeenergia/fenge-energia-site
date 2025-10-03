@@ -38,7 +38,6 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     body { font-family: 'Inter', sans-serif; }
-
     .hero-section{
       background-image:linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img/background-fenge.png');
       background-size:cover;background-position:center;
@@ -48,21 +47,22 @@
     .gallery-item{transition:all .3s ease}
     .gallery-item:hover{transform:scale(1.03)}
   </style>
+
+  <!-- Google Maps API (Places) -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE&libraries=places" defer></script>
 </head>
 <body class="bg-gray-50">
   <!-- Header -->
   <header class="bg-fenge-dark text-white sticky top-0 z-50 shadow-lg">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      
-        <!-- Logo -->
-        <a href="#" class="flex items-center space-x-3 select-none">
-          <img src="img/logo-branco.png" alt="Fenge Energia & Soluções"
-               class="h-16 md:h-20 w-auto"/>
-          <span class="font-extrabold leading-tight text-[3rem] md:text-[2.5rem] text-[#ADFF2F]">
-            Fenge Energia &amp; Soluções
-          </span>
-        </a>
-      
+      <!-- Logo -->
+      <a href="#" class="flex items-center space-x-3 select-none">
+        <img src="img/logo-branco.png" alt="Fenge Energia & Soluções"
+             class="h-16 md:h-20 w-auto"/>
+        <span class="font-extrabold leading-tight text-[3rem] md:text-[2.5rem] text-[#ADFF2F]">
+          Fenge Energia &amp; Soluções
+        </span>
+      </a>
 
       <!-- Mobile Menu Button -->
       <button id="mobile-menu-button" class="md:hidden focus:outline-none">
@@ -266,7 +266,7 @@
           </a>
         </div>
 
-       <div class="order-1 md:order-2">
+        <div class="order-1 md:order-2">
           <img
             src="img/piso-aquecido.png?v=1"
             alt="Família em sala com piso aquecido inteligente"
@@ -274,8 +274,8 @@
             loading="lazy" decoding="async">
         </div>
       </div>
-      
-        <!-- Como Funciona -->
+
+      <!-- Como Funciona -->
       <div class="mt-20 grid md:grid-cols-2 gap-10 items-center">
         <!-- Imagem -->
         <div class="md:order-1">
@@ -284,7 +284,7 @@
                class="w-full rounded-lg shadow-lg aspect-[3/2] object-cover"
                loading="lazy" decoding="async">
         </div>
-      
+
         <!-- Texto -->
         <div class="md:order-2">
           <h3 class="text-2xl font-bold text-fenge-dark mb-4">Como Funciona?</h3>
@@ -312,7 +312,7 @@
           </p>
         </div>
       </div>
-      
+
     </div>
   </section>
 
@@ -469,30 +469,29 @@
         </div>
 
         <div>
-          
-            <form action="https://formsubmit.co/contato.fenge@gmail.com" method="POST" class="bg-gray-800 bg-opacity-50 p-6 rounded-lg">
+          <form action="https://formsubmit.co/contato.fenge@gmail.com" method="POST" class="bg-gray-800 bg-opacity-50 p-6 rounded-lg">
             <!-- Configurações extras -->
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_next" value="https://fengeenergia.github.io/fenge-energia-site/?sent=1">
-          
+
             <div class="mb-4">
               <label for="name" class="block mb-2 font-medium">Nome</label>
               <input type="text" name="Nome" id="name" required
                      class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green">
             </div>
-            
+
             <div class="mb-4">
               <label for="email" class="block mb-2 font-medium">E-mail</label>
               <input type="email" name="Email" id="email" required
                      class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green">
             </div>
-            
+
             <div class="mb-4">
               <label for="phone" class="block mb-2 font-medium">Telefone</label>
               <input type="tel" name="Telefone" id="phone"
                      class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green">
             </div>
-            
+
             <div class="mb-4">
               <label for="service" class="block mb-2 font-medium">Serviço de Interesse</label>
               <select name="Serviço" id="service"
@@ -503,20 +502,45 @@
                 <option>Outros</option>
               </select>
             </div>
-            
+
+            <!-- Endereço (Autocomplete) -->
+            <div class="mb-4">
+              <label for="location-input" class="block mb-2 font-medium">Endereço</label>
+              <input id="location-input" name="Endereço" type="text"
+                     class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green"
+                     placeholder="Digite seu endereço">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <input id="locality-input" name="Cidade" type="text" placeholder="Cidade"
+                     class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg">
+              <input id="state-input" name="Estado" type="text" placeholder="Estado"
+                     class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+              <input id="postal-input" name="CEP" type="text" placeholder="CEP"
+                     class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg">
+              <input id="country-input" name="País" type="text" placeholder="País"
+                     class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg">
+            </div>
+
+            <!-- Mapa -->
+            <div id="map" class="w-full h-64 rounded-lg shadow-lg mb-6 bg-gray-700/40"></div>
+
             <div class="mb-6">
               <label for="message" class="block mb-2 font-medium">Mensagem</label>
               <textarea name="Mensagem" id="message" rows="4" required
                         class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green"></textarea>
             </div>
-            
+
             <button type="submit"
                     class="w-full bg-fenge-green hover:bg-green-500 text-fenge-dark font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-[1.02]">
               Enviar Mensagem
               <i data-feather="send" class="inline ml-2"></i>
             </button>
           </form>
-          
+
           <script>
             // Mostra aviso quando voltar do FormSubmit com ?sent=1
             (function () {
@@ -524,7 +548,6 @@
                 const sent = window.location.search.includes('sent=1');
                 if (sent) {
                   alert('Mensagem enviada com sucesso! Em breve entraremos em contato.');
-                  // limpa o parâmetro da URL para não repetir o alerta
                   const url = new URL(window.location);
                   url.searchParams.delete('sent');
                   window.history.replaceState({}, '', url.toString());
@@ -532,12 +555,10 @@
               } catch(e){}
             })();
           </script>
-        
-                         
-                </div>
-              </div>
-            </div>
-          </section>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Mapa -->
   <div class="h-96 w-full">
@@ -605,39 +626,80 @@
     feather.replace();
   </script>
 
-     <!-- Botão WhatsApp Flutuante (destacado) -->
-    <a href="https://wa.me/5532998163279?text=Olá!%20Gostaria%20de%20um%20orçamento."
-       class="fixed bottom-6 right-6 md:bottom-8 md:right-8
-              inline-flex items-center gap-3
-              rounded-full p-5 md:p-6
-              bg-gradient-to-r from-green-500 to-emerald-500
-              hover:from-green-600 hover:to-emerald-600
-              text-white shadow-2xl ring-4 ring-green-300 ring-offset-2 ring-offset-transparent
-              transition-all duration-300 transform hover:scale-125 animate-bounce z-50"
-       target="_blank" rel="noopener noreferrer"
-       aria-label="Fale conosco no WhatsApp" title="Fale conosco no WhatsApp">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 md:h-12 md:w-12" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12.001 2.003C6.478 2.003 2 6.48 2 12c0 2.116.553 4.14 1.604 5.928L2 22l4.206-1.556C8.003 21.45 9.95 22 12 22c5.523 0 10.001-4.478 10.001-10s-4.478-9.997-10-9.997h0zM12 20c-1.879 0-3.682-.55-5.21-1.59l-.373-.25-2.493.922.856-2.434-.242-.384C3.88 14.87 3.5 13.463 3.5 12 3.5 7.862 7.362 4 12 4s8.5 3.862 8.5 8c0 4.139-3.862 8-8.5 8zm4.123-5.464c-.225-.112-1.33-.657-1.537-.731-.206-.075-.356-.113-.506.112-.15.225-.581.731-.713.881-.131.15-.262.169-.487.056-.225-.113-.949-.35-1.805-1.115-.667-.596-1.115-1.333-1.246-1.559-.131-.225-.014-.347.099-.46.102-.102.225-.263.337-.394.112-.131.15-.225.225-.375.075-.15.037-.281-.019-.394-.056-.112-.506-1.219-.694-1.669-.182-.438-.367-.38-.506-.388-.131-.006-.281-.007-.431-.007s-.394.056-.6.281c-.206.225-.788.769-.788 1.875s.807 2.174.919 2.325c.112.15 1.591 2.438 3.86 3.418.54.234.961.374 1.29.479.542.173 1.034.149 1.425.09.435-.064 1.33-.544 1.52-1.07.187-.525.187-.975.131-1.07-.056-.094-.206-.15-.431-.262z"/>
-      </svg>
-      <!-- Texto aparece no desktop para reforçar o CTA -->
-      <span class="hidden md:inline font-extrabold tracking-tight drop-shadow-sm">Fale no WhatsApp</span>
-    </a>
+  <!-- Botão WhatsApp Flutuante (destacado) -->
+  <a href="https://wa.me/5532998163279?text=Olá!%20Gostaria%20de%20um%20orçamento."
+     class="fixed bottom-6 right-6 md:bottom-8 md:right-8
+            inline-flex items-center gap-3
+            rounded-full p-5 md:p-6
+            bg-gradient-to-r from-green-500 to-emerald-500
+            hover:from-green-600 hover:to-emerald-600
+            text-white shadow-2xl ring-4 ring-green-300 ring-offset-2 ring-offset-transparent
+            transition-all duration-300 transform hover:scale-125 animate-bounce z-50"
+     target="_blank" rel="noopener noreferrer"
+     aria-label="Fale conosco no WhatsApp" title="Fale conosco no WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 md:h-12 md:w-12" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12.001 2.003C6.478 2.003 2 6.48 2 12c0 2.116.553 4.14 1.604 5.928L2 22l4.206-1.556C8.003 21.45 9.95 22 12 22c5.523 0 10.001-4.478 10.001-10s-4.478-9.997-10-9.997h0zM12 20c-1.879 0-3.682-.55-5.21-1.59l-.373-.25-2.493.922.856-2.434-.242-.384C3.88 14.87 3.5 13.463 3.5 12 3.5 7.862 7.362 4 12 4s8.5 3.862 8.5 8c0 4.139-3.862 8-8.5 8zm4.123-5.464c-.225-.112-1.33-.657-1.537-.731-.206-.075-.356-.113-.506.112-.15.225-.581.731-.713.881-.131.15-.262.169-.487.056-.225-.113-.949-.35-1.805-1.115-.667-.596-1.115-1.333-1.246-1.559-.131-.225-.014-.347.099-.46.102-.102.225-.263.337-.394.112-.131.15-.225.225-.375.075-.15.037-.281-.019-.394-.056-.112-.506-1.219-.694-1.669-.182-.438-.367-.38-.506-.388-.131-.006-.281-.007-.431-.007s-.394.056-.6.281c-.206.225-.788.769-.788 1.875s.807 2.174.919 2.325c.112.15 1.591 2.438 3.86 3.418.54.234.961.374 1.29.479.542.173 1.034.149 1.425.09.435-.064 1.33-.544 1.52-1.07.187-.525.187-.975.131-1.07-.056-.094-.206-.15-.431-.262z"/>
+    </svg>
+    <span class="hidden md:inline font-extrabold tracking-tight drop-shadow-sm">Fale no WhatsApp</span>
+  </a>
+
+  <!-- Script do mapa + autocomplete -->
+  <script>
+    let map, marker, autocomplete;
+
+    function initAutocompleteMap() {
+      // Se a API ainda não carregou, tenta novamente logo depois
+      if (!window.google || !google.maps || !google.maps.places) {
+        setTimeout(initAutocompleteMap, 300);
+        return;
+      }
+
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: -21.1860, lng: -43.9786 }, // Barroso/MG
+        zoom: 13,
+        mapTypeControl: false,
+        streetViewControl: true,
+        fullscreenControl: true,
+      });
+
+      marker = new google.maps.Marker({ map });
+
+      const input = document.getElementById("location-input");
+      autocomplete = new google.maps.places.Autocomplete(input, {
+        types: ["address"],
+        fields: ["address_components", "geometry", "name"],
+      });
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (!place.geometry || !place.geometry.location) {
+          alert("Endereço inválido. Por favor, escolha um endereço da lista.");
+          return;
+        }
+
+        map.setCenter(place.geometry.location);
+        map.setZoom(16);
+        marker.setPosition(place.geometry.location);
+
+        // Preenche campos auxiliares
+        document.getElementById("locality-input").value = getComp(place, "locality");
+        document.getElementById("state-input").value    = getComp(place, "administrative_area_level_1");
+        document.getElementById("postal-input").value   = getComp(place, "postal_code");
+        document.getElementById("country-input").value  = getComp(place, "country");
+      });
+    }
+
+    function getComp(place, type) {
+      for (const comp of (place.address_components || [])) {
+        if (comp.types && comp.types.includes(type)) {
+          return comp.long_name;
+        }
+      }
+      return "";
+    }
+
+    // Inicializa quando a página estiver pronta
+    window.addEventListener('load', initAutocompleteMap);
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
