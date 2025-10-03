@@ -469,25 +469,32 @@
         </div>
 
         <div>
-         <form action="mailto:contato.fenge@gmail.com" method="POST" enctype="text/plain" class="bg-gray-800 bg-opacity-50 p-6 rounded-lg">
+          
+          <form action="https://formsubmit.co/contato.fenge@gmail.com"
+              method="POST"
+              class="bg-gray-800 bg-opacity-50 p-6 rounded-lg">
+        
           <div class="mb-4">
             <label for="name" class="block mb-2 font-medium">Nome</label>
-            <input type="text" name="Nome" id="name" required
+            <input type="text" name="name" id="name" required
                    class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green">
           </div>
+        
           <div class="mb-4">
             <label for="email" class="block mb-2 font-medium">E-mail</label>
-            <input type="email" name="Email" id="email" required
+            <input type="email" name="email" id="email" required
                    class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green">
           </div>
+        
           <div class="mb-4">
             <label for="phone" class="block mb-2 font-medium">Telefone</label>
-            <input type="tel" name="Telefone" id="phone"
+            <input type="tel" name="phone" id="phone"
                    class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green">
           </div>
+        
           <div class="mb-4">
             <label for="service" class="block mb-2 font-medium">Serviço de Interesse</label>
-            <select name="Serviço" id="service"
+            <select name="service" id="service" required
                     class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green">
               <option>Energia Solar</option>
               <option>Piso Aquecido</option>
@@ -495,11 +502,19 @@
               <option>Outros</option>
             </select>
           </div>
+        
           <div class="mb-6">
             <label for="message" class="block mb-2 font-medium">Mensagem</label>
-            <textarea name="Mensagem" id="message" rows="4" required
+            <textarea name="message" id="message" rows="4" required
                       class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green"></textarea>
           </div>
+        
+          <!-- Configurações extras -->
+          <input type="hidden" name="_subject" value="Novo contato - Site Fenge Energia">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="box">
+          <input type="hidden" name="_next" value="https://fengeenergia.github.io/fenge-energia-site/#contato-ok">
+        
           <button type="submit"
                   class="w-full bg-fenge-green hover:bg-green-500 text-fenge-dark font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-[1.02]">
             Enviar Mensagem
@@ -605,6 +620,7 @@
   </a>
 </body>
 </html>
+
 
 
 
