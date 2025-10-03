@@ -14,25 +14,11 @@
     gtag('config', 'AW-358794117');
   </script>
 
-  <!-- Tailwind + Feather -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'fenge-green': '#a3e635',
-            'fenge-orange': '#fbbf24',
-            'fenge-dark': '#1f2937',
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
+  <!-- Tailwind (build local) -->
+  <link rel="stylesheet" href="css/tailwind.min.css">
+
+  <!-- Feather Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" defer></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -47,75 +33,16 @@
     .gallery-item:hover{transform:scale(1.03)}
   </style>
 
-  <!-- ===== Funções do Google Maps (ANTES da API) ===== -->
-  <script>
-    function initAutocompleteMap() {
-      // Aguarda a API
-      if (!window.google || !google.maps || !google.maps.places) {
-        setTimeout(initAutocompleteMap, 300);
-        return;
-      }
-
-      const mapEl = document.getElementById("map");
-      if (!mapEl) return; // evita erro se o elemento não existir
-
-      const map = new google.maps.Map(mapEl, {
-        center: { lat: -21.1860, lng: -43.9786 }, // Barroso/MG
-        zoom: 13,
-        mapTypeControl: false,
-        streetViewControl: true,
-        fullscreenControl: true,
-      });
-
-      const marker = new google.maps.Marker({ map });
-
-      const input = document.getElementById("location-input");
-      if (!input) return;
-
-      const autocomplete = new google.maps.places.Autocomplete(input, {
-        types: ["address"],
-        fields: ["address_components", "geometry", "name"],
-      });
-
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        if (!place.geometry || !place.geometry.location) {
-          alert("Endereço inválido. Por favor, escolha um endereço da lista.");
-          return;
-        }
-
-        map.setCenter(place.geometry.location);
-        map.setZoom(16);
-        marker.setPosition(place.geometry.location);
-
-        // Preenche campos auxiliares
-        document.getElementById("locality-input").value = getComp(place, "locality");
-        document.getElementById("state-input").value    = getComp(place, "administrative_area_level_1");
-        document.getElementById("postal-input").value   = getComp(place, "postal_code");
-        document.getElementById("country-input").value  = getComp(place, "country");
-      });
-    }
-
-    function getComp(place, type) {
-      for (const comp of (place.address_components || [])) {
-        if (comp.types && comp.types.includes(type)) {
-          return comp.long_name;
-        }
-      }
-      return "";
-    }
-  </script>
-
-  <!-- ===== Google Maps API (Places) COM callback ===== -->
+  <!-- Google Maps API (Places) -->
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAx0Q2d_fHNIUGfaBgkJyYjixnOPUd4oUA&libraries=places&callback=initAutocompleteMap"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAx0Q2d_fHNIUGfaBgkJyYjixnOPUd4oUA&libraries=places&callback=initAutocompleteMap&loading=async"
     async defer></script>
 </head>
 <body class="bg-gray-50">
   <!-- Header -->
   <header class="bg-fenge-dark text-white sticky top-0 z-50 shadow-lg">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <!-- Logo + Nome -->
+      <!-- Logo -->
       <a href="#" class="flex items-center space-x-3 select-none">
         <img src="img/logo-branco.png" alt="Fenge Energia & Soluções"
              class="h-16 md:h-20 w-auto"/>
@@ -275,6 +202,7 @@
           </p>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <!-- Saúde -->
             <div class="bg-white p-4 rounded-lg shadow flex items-start gap-3">
               <div class="w-16 h-16 rounded-full bg-fenge-green/15 flex items-center justify-center shrink-0">
                 <img src="img/saude.png" alt="Ícone Saúde" class="w-7 h-7 object-contain">
@@ -285,6 +213,7 @@
               </div>
             </div>
 
+            <!-- Conforto -->
             <div class="bg-white p-4 rounded-lg shadow flex items-start gap-3">
               <div class="w-12 h-12 rounded-full bg-fenge-green/15 flex items-center justify-center shrink-0">
                 <img src="img/conforto.png" alt="Ícone Conforto" class="w-7 h-7 object-contain">
@@ -295,6 +224,7 @@
               </div>
             </div>
 
+            <!-- Segurança -->
             <div class="bg-white p-4 rounded-lg shadow flex items-start gap-3">
               <div class="w-12 h-12 rounded-full bg-fenge-green/15 flex items-center justify-center shrink-0">
                 <img src="img/seguranca.png" alt="Ícone Segurança" class="w-7 h-7 object-contain">
@@ -305,6 +235,7 @@
               </div>
             </div>
 
+            <!-- Durabilidade -->
             <div class="bg-white p-4 rounded-lg shadow flex items-start gap-3">
               <div class="w-12 h-12 rounded-full bg-fenge-green/15 flex items-center justify-center shrink-0">
                 <img src="img/durabilidade.png" alt="Ícone Durabilidade" class="w-7 h-7 object-contain">
@@ -333,6 +264,7 @@
 
       <!-- Como Funciona -->
       <div class="mt-20 grid md:grid-cols-2 gap-10 items-center">
+        <!-- Imagem -->
         <div class="md:order-1">
           <img src="img/piso-montagem.png"
                alt="Montagem dos cabos calefatores - Piso Aquecido"
@@ -340,6 +272,7 @@
                loading="lazy" decoding="async">
         </div>
 
+        <!-- Texto -->
         <div class="md:order-2">
           <h3 class="text-2xl font-bold text-fenge-dark mb-4">Como Funciona?</h3>
           <p class="text-gray-600 leading-relaxed">
@@ -384,6 +317,7 @@
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- 1: solar1.jpg -->
         <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
           <img src="img/solar1.jpg" alt="Usina Solar em Barroso"
                class="w-full h-48 object-cover" loading="lazy" decoding="async">
@@ -393,6 +327,7 @@
           </div>
         </div>
 
+        <!-- 2: piso1.JPG -->
         <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
           <img src="img/piso1.JPG" alt="Sistema de Aquecimento de Piso em Barroso"
                class="w-full h-48 object-cover" loading="lazy" decoding="async">
@@ -402,6 +337,7 @@
           </div>
         </div>
 
+        <!-- 3: solar2.JPG -->
         <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
           <img src="img/solar2.JPG" alt="Usina Solar em Barbacena"
                class="w-full h-48 object-cover" loading="lazy" decoding="async">
@@ -411,6 +347,7 @@
           </div>
         </div>
 
+        <!-- 4: piso2.jpg -->
         <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
           <img src="img/piso2.jpg" alt="Sistema de Aquecimento de Piso em Barbacena"
                class="w-full h-48 object-cover" loading="lazy" decoding="async">
@@ -420,6 +357,7 @@
           </div>
         </div>
 
+        <!-- 5: solar3.JPG -->
         <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
           <img src="img/solar3.JPG" alt="Usina Solar em Petrópolis"
                class="w-full h-48 object-cover" loading="lazy" decoding="async">
@@ -429,6 +367,7 @@
           </div>
         </div>
 
+        <!-- 6: piso3.jpg -->
         <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
           <img src="img/piso3.jpg" alt="Sistema de Aquecimento de Piso em Tiradentes"
                class="w-full h-48 object-cover" loading="lazy" decoding="async">
@@ -573,7 +512,7 @@
                      class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg">
             </div>
 
-            <!-- Mapa (preenchido pelo autocomplete) -->
+            <!-- Mapa -->
             <div id="map" class="w-full h-64 rounded-lg shadow-lg mb-6 bg-gray-700/40"></div>
 
             <div class="mb-6">
@@ -608,7 +547,7 @@
     </div>
   </section>
 
-  <!-- Mapa grande (embed) -->
+  <!-- Mapa -->
   <div class="h-96 w-full">
     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14786.182538452924!2d-43.9843326!3d-21.1860188!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa2a0956f2a7c3b%3A0x570f8a72714f9b60!2sBarroso%2C%20MG%2C%2036212-000!5e0!3m2!1sen!2sbr!4v1681234567890"
             width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
@@ -671,7 +610,9 @@
     window.addEventListener('scroll', animateOnScroll);
 
     // Feather icons
-    feather.replace();
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.feather) feather.replace();
+    });
   </script>
 
   <!-- Botão WhatsApp Flutuante (destacado) -->
@@ -686,9 +627,61 @@
      target="_blank" rel="noopener noreferrer"
      aria-label="Fale conosco no WhatsApp" title="Fale conosco no WhatsApp">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 md:h-12 md:w-12" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12.001 2.003C6.478 2.003 2 6.48 2 12c0 2.116.553 4.14 1.604 5.928L2 22l4.206-1.556C8.003 21.45 9.95 22 12 22c5.523 0 10.001-4.478 10.001-10s-4.478-9.997-10-9.997h0zM12 20c-1.879 0-3.682-.55-5.21-1.59l-.373-.25-2.493.922.856-2.434-.242-.384C3.88 14.87 3.5 13.463 3.5 12 3.5 7.862 7.362 4 12 4s8.5 3.862 8.5 8c0 4.139-3.862 8-8.5 8zm4.123-5.464c-.225-.112-1.33-.657-1.537-.731-.206-.075-.356-.113-.506.112-.15.225-.581.731-.713.881-.131.15-.262.169-.487.056-.225-.113-.949-.35-1.805-1.115-.667-.596-1.115-1.333-1.246-1.559-.131-.225-.014-.347.099-.46.102-.102.225-.263.337-.394.112-.131.15-.225.225-.375.075-.15.037-.281-.019-.394-.056-.112-.506-1.219-.694-1.669-.182-.438-.367-.38-.506-.388-.131-.006-.281-.007-.431-.007s-.394.056-.6.281c-.206.225-.788.769-.788 1.875s.807 2.174.919 2.325c.112.15 1.591 2.438 3.86 3.418.54.234.961.374 1.29.479.542.173 1.034.149 1.425.09.435-.064 1.33-.544 1.52-1.07.187-.525.187-.975.131-1.07-.056-.094-.206-.15-.431-.262z"/>
+      <path d="M12.001 2.003C6.478 2.003 2 6.48 2 12c0 2.116.553 4.14 1.604 5.928L2 22l4.206-1.556C8.003 21.45 9.95 22 12 22c5.523 0 10.001-4.478 10.001-10s-4.478-9.997-10-9.997h0zM12 20c-1.879 0-3.682-.55-5.21-1.59l-.373-.25-2.493.922.856-2.434-.242-.384C3.88 14.87 3.5 13.463 3.5 12 3.5 7.862 7.362 4 12 4s8.5 3.862 8.5 8c0 4.139-3.862 8-8.5 8zm4.123-5.464c-.225-.112-1.33-.657-1.537-.731-.206-.075-.356-.113-.506.112-.15.225-.581.731-.713.881-.131.15-.262.169-.487.056-.225-.113-.949-.35-1.805-1.115-.667-.596-1.115-1.333-1.246-1.559-.131-.225-.014-.347.099-.46.102-.102.225-.263.337-.394.112-.131.15-.225.225-.375.075-.15.037-.281-.019-.394-.56-.112-.506-1.219-.694-1.669-.182-.438-.367-.38-.506-.388-.131-.006-.281-.007-.431-.007s-.394.056-.6.281c-.206.225-.788.769-.788 1.875s.807 2.174.919 2.325c.112.15 1.591 2.438 3.86 3.418.54.234.961.374 1.29.479.542.173 1.034.149 1.425.09.435-.064 1.33-.544 1.52-1.07.187-.525.187-.975.131-1.07-.056-.094-.206-.15-.431-.262z"/>
     </svg>
     <span class="hidden md:inline font-extrabold tracking-tight drop-shadow-sm">Fale no WhatsApp</span>
   </a>
+
+  <!-- Script do mapa + autocomplete -->
+  <script>
+    let map, marker, autocomplete;
+
+    function initAutocompleteMap() {
+      if (!window.google || !google.maps || !google.maps.places) return;
+
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: -21.1860, lng: -43.9786 }, // Barroso/MG
+        zoom: 13,
+        mapTypeControl: false,
+        streetViewControl: true,
+        fullscreenControl: true,
+      });
+
+      marker = new google.maps.Marker({ map });
+
+      const input = document.getElementById("location-input");
+      autocomplete = new google.maps.places.Autocomplete(input, {
+        types: ["address"],
+        fields: ["address_components", "geometry", "name"],
+      });
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (!place.geometry || !place.geometry.location) {
+          alert("Endereço inválido. Por favor, escolha um endereço da lista.");
+          return;
+        }
+
+        map.setCenter(place.geometry.location);
+        map.setZoom(16);
+        marker.setPosition(place.geometry.location);
+
+        // Preenche campos auxiliares
+        document.getElementById("locality-input").value = getComp(place, "locality");
+        document.getElementById("state-input").value    = getComp(place, "administrative_area_level_1");
+        document.getElementById("postal-input").value   = getComp(place, "postal_code");
+        document.getElementById("country-input").value  = getComp(place, "country");
+      });
+    }
+
+    function getComp(place, type) {
+      for (const comp of (place.address_components || [])) {
+        if (comp.types && comp.types.includes(type)) {
+          return comp.long_name;
+        }
+      }
+      return "";
+    }
+  </script>
 </body>
 </html>
