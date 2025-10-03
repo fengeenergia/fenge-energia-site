@@ -48,11 +48,10 @@
     .gallery-item:hover{transform:scale(1.03)}
   </style>
 
-  <!-- Google Maps API (Places) - ATENÇÃO: substitua SUA_API_KEY_AQUI pela sua chave REAL -->
+  <!-- Google Maps API (Places) - SUA CHAVE INSERIDA -->
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=SUA_API_KEY_AQUI&libraries=places&callback=initAutocompleteMap"
-    async defer
-  ></script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAx0Q2d_fHNIUGfaBgkJyYjixnOPUd4oUA&libraries=places&callback=initAutocompleteMap"
+    async defer></script>
 </head>
 <body class="bg-gray-50">
   <!-- Header -->
@@ -651,9 +650,8 @@
     let map, marker, autocomplete;
 
     function initAutocompleteMap() {
-      // Pode ser chamado pelo callback da API do Google Maps
+      // Se a API ainda não carregou, tenta novamente logo depois
       if (!window.google || !google.maps || !google.maps.places) {
-        // Se por algum motivo ainda não carregou, tenta novamente
         setTimeout(initAutocompleteMap, 300);
         return;
       }
@@ -701,6 +699,9 @@
       }
       return "";
     }
+
+    // Se não usar o callback, poderíamos chamar no onload. Com callback, isso é redundante, mas seguro.
+    window.addEventListener('load', initAutocompleteMap);
   </script>
 </body>
 </html>
