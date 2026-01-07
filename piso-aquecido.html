@@ -1,1 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Piso Aquecido Residencial em Barroso | Fenge Energia & Soluções</title>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5FDTZDHN');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FDTZDHN"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+ 
+  <!-- Tailwind + Feather -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'fenge-green': '#a3e635',
+            'fenge-orange': '#fbbf24',
+            'fenge-dark': '#1f2937',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .hero-section{
+      background-image:linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img/background-fenge.png');
+      background-size:cover;background-position:center;
+    }
+    .feature-icon{transition:all .3s ease}
+    .feature-card:hover .feature-icon{transform:scale(1.1) rotate(5deg)}
+    .gallery-item{transition:all .3s ease}
+    .gallery-item:hover{transform:scale(1.03)}
+  </style>
+
+  <!-- ===== Funções do Google Maps (ANTES da API) ===== -->
+  <script>
+    function initAutocompleteMap() {
+      // Aguarda a API
+      if (!window.google || !google.maps || !google.maps.places) {
+        setTimeout(initAutocompleteMap, 300);
+        return;
+      }
+
+      const mapEl = document.getElementById("map");
+      if (!mapEl) return; // evita erro se o elemento não existir
+
+      const map = new google.maps.Map(mapEl, {
+        center: { lat: -21.1860, lng: -43.9786 }, // Barroso/MG
+        zoom: 13,
+        mapTypeControl: false,
+        streetViewControl: true,
+        fullscreenControl: true,
+      });
+
+      const marker = new google.maps.Marker({ map });
+
+      const input = document.getElementById("location-input");
+      if (!input) return;
+
+      const autocomplete = new google.maps.places.Autocomplete(input, {
+        types: ["address"],
+        fields: ["address_components", "geometry", "name"],
+      });
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (!place.geometry || !place.geometry.location) {
+          alert("Endereço inválido. Por favor, escolha um endereço da lista.");
+          return;
+        }
+
+        map.setCenter(place.geometry.location);
+        map.setZoom(16);
+        marker.setPosition(place.geometry.location);
+
+        // Preenche campos auxiliares
+        document.getElementById("locality-input").value = getComp(place, "locality");
+        document.getElementById("state-input").value    = getComp(place, "administrative_area_level_1");
+        document.getElementById("postal-input").value   = getComp(place, "postal_code");
+        document.getElementById("country-input").value  = getComp(place, "country");
+      });
+    }
+
+    function getComp(place, type) {
+      for (const comp of (place.address_components || [])) {
+        if (comp.types && comp.types.includes(type)) {
+          return comp.long_name;
+        }
+      }
+      return "";
+    }
+  </script>
+
+  <!-- ===== Google Maps API (Places) COM callback ===== -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAx0Q2d_fHNIUGfaBgkJyYjixnOPUd4oUA&libraries=places&callback=initAutocompleteMap"
+    async defer></script>
+</head>
+<body class="bg-gray-50">
+  <!-- Header -->
+  <header class="bg-fenge-dark text-white sticky top-0 z-50 shadow-lg">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <!-- Logo + Nome -->
+      <a href="#" class="flex items-center space-x-3 select-none">
+        <img src="img/logo-branco.png" alt="Fenge Energia & Soluções"
+             class="h-16 md:h-20 w-auto"/>
+        <span class="font-extrabold leading-tight text-[3rem] md:text-[1.5rem] text-[#ADFF2F]">
+          Fenge Energia &amp; Soluções
+        </span>
+      </a>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+        <i data-feather="menu" class="w-8 h-8"></i>
+      </button>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex space-x-8">
+        <a href="#" class="text-fenge-green font-medium">Início</a>
+        <a href="#solar" class="hover:text-fenge-green transition">Energia Solar</a>
+        <a href="#floor" class="hover:text-fenge-green transition">Piso Aquecido</a>
+        <a href="#projects" class="hover:text-fenge-green transition">Projetos</a>
+        <a href="#contact" class="hover:text-fenge-green transition">Contato</a>
+      </nav>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-fenge-dark pb-4 px-4">
+      <div class="flex flex-col space-y-3">
+        <a href="#" class="text-fenge-green font-medium">Início</a>
+        <a href="#solar" class="hover:text-fenge-green transition">Energia Solar</a>
+        <a href="#floor" class="hover:text-fenge-green transition">Piso Aquecido</a>
+        <a href="#projects" class="hover:text-fenge-green transition">Projetos</a>
+        <a href="#contact" class="hover:text-fenge-green transition">Contato</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero-section text-white py-24 md:py-40 relative overflow-hidden">
+    <div class="container mx-auto px-4 text-center relative z-10">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white">
+        Piso Aquecido Residencial <br/>
+        <span class="text-fenge-green">Conforto, Saúde e Bem-estar</span>
+      </h1>
+
+      <p class="text-2xl md:text-3xl mb-10 max-w-3xl mx-auto text-gray-200">
+        Ambientes sempre quentinhos, livres de umidade e mofo,
+        com tecnologia segura e eficiente para sua casa.
+      </p>
+
+      <a href="#contact"
+         class="bg-fenge-orange hover:bg-yellow-500 text-fenge-dark font-bold
+                py-4 px-10 rounded-full inline-flex items-center text-xl
+                transition duration-300 transform hover:scale-110 shadow-lg">
+        Solicite um Orçamento
+        <i data-feather="arrow-right" class="ml-2"></i>
+      </a>
+    </div>
+  </section>
+
+    <!-- Piso Aquecido -->
+  <section id="floor" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-fenge-dark mb-4">
+          Piso Aquecido <i data-feather="thermometer" class="inline text-fenge-orange"></i>
+        </h2>
+        <div class="w-20 h-1 bg-fenge-green mx-auto"></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div class="order-2 md:order-1">
+          <h3 class="text-2xl font-bold text-fenge-dark mb-4">Sua Casa Sempre Quentinha e Saudável</h3>
+          <p class="text-gray-600 mb-4">
+            Imagine caminhar descalço em um piso aquecido, sentindo o calor suave e uniforme em cada canto da sua casa. O sistema de aquecimentos de pisos da Fenge Energia & Soluções não só traz aconchego nos dias frios, como também ajuda a manter o ambiente mais saudável, eliminando a umidade e prevenindo a formação de mofo e fungos. Um investimento em conforto, saúde e bem-estar para toda a família.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow flex items-start gap-3">
+              <div class="w-16 h-16 rounded-full bg-fenge-green/15 flex items-center justify-center shrink-0">
+                <img src="img/saude.png" alt="Ícone Saúde" class="w-7 h-7 object-contain">
+              </div>
+              <div>
+                <h4 class="font-bold">Saúde</h4>
+                <p class="text-sm text-gray-600">🌿 Respire melhor e viva em um ambiente livre de mofo e umidade.</p>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow flex items-start gap-3">
+              <div class="w-12 h-12 rounded-full bg-fenge-green/15 flex items-center justify-center shrink-0">
+                <img src="img/conforto.png" alt="Ícone Conforto" class="w-7 h-7 object-contain">
+              </div>
+              <div>
+                <h4 class="font-bold">Conforto</h4>
+                <p class="text-sm text-gray-600">✨ Sinta a diferença de um lar sempre aquecido e aconchegante nos dias frios.</p>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow flex items-start gap-3">
+              <div class="w-12 h-12 rounded-full bg-fenge-green/15 flex items-center justify-center shrink-0">
+                <img src="img/seguranca.png" alt="Ícone Segurança" class="w-7 h-7 object-contain">
+              </div>
+              <div>
+                <h4 class="font-bold">Segurança</h4>
+                <p class="text-sm text-gray-600">🔒 Tecnologia confiável, protegida e segura para toda a família.</p>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow flex items-start gap-3">
+              <div class="w-12 h-12 rounded-full bg-fenge-green/15 flex items-center justify-center shrink-0">
+                <img src="img/durabilidade.png" alt="Ícone Durabilidade" class="w-7 h-7 object-contain">
+              </div>
+              <div>
+                <h4 class="font-bold">Durabilidade</h4>
+                <p class="text-sm text-gray-600">🏆 Resistência e confiabilidade que acompanham sua casa por toda a vida.</p>
+              </div>
+            </div>
+          </div>
+
+          <a href="#contact" class="inline-flex items-center text-fenge-orange font-medium">
+            Saiba mais sobre piso aquecido
+            <i data-feather="arrow-right" class="ml-2"></i>
+          </a>
+        </div>
+
+        <div class="order-1 md:order-2">
+          <img
+            src="img/piso-aquecido.png?v=1"
+            alt="Família em sala com piso aquecido inteligente"
+            class="rounded-lg shadow-lg w-full"
+            loading="lazy" decoding="async">
+        </div>
+      </div>
+
+      <!-- Como Funciona -->
+      <div class="mt-20 grid md:grid-cols-2 gap-10 items-center">
+        <div class="md:order-1">
+          <img src="img/piso-montagem.png"
+               alt="Montagem dos cabos calefatores - Piso Aquecido"
+               class="w-full rounded-lg shadow-lg aspect-[3/2] object-cover"
+               loading="lazy" decoding="async">
+        </div>
+
+        <div class="md:order-2">
+          <h3 class="text-2xl font-bold text-fenge-dark mb-4">Como Funciona?</h3>
+          <p class="text-gray-600 leading-relaxed">
+            A instalação do piso aquecido é feita com planejamento para garantir eficiência,
+            segurança e durabilidade. O processo inicia com a preparação do contrapiso, que deve
+            estar limpo e nivelado. Em seguida, define-se o projeto elétrico e o layout dos cabos
+            calefatores, com circuitos exclusivos por ambiente para melhor desempenho.
+          </p>
+          <p class="text-gray-600 leading-relaxed mt-4">
+            Os cabos são fixados ao contrapiso com réguas ou grampos, respeitando o espaçamento
+            adequado para distribuição uniforme do calor. Antes de cobrir, é realizado um teste
+            elétrico para assegurar o perfeito funcionamento. Depois, aplica-se uma camada de
+            proteção mecânica com argamassa de regularização ou autonivelante, que protege os cabos
+            e nivela a base para o revestimento.
+          </p>
+          <p class="text-gray-600 leading-relaxed mt-4">
+            Após a cura, instala-se o acabamento desejado, como porcelanato, cerâmica, mármore,
+            granito, madeira, laminado ou vinílico. O sistema é finalizado com um termostato digital,
+            que permite controle preciso da temperatura e pode ser integrado à automação residencial.
+          </p>
+          <p class="text-gray-600 leading-relaxed mt-4">
+            Por fim, testes garantem a segurança e o desempenho do sistema, entregando ao cliente
+            ambientes aconchegantes, saudáveis e modernos.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Projetos -->
+  <section id="projects" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-fenge-dark mb-4">
+          Projetos Realizados <i data-feather="award" class="inline text-fenge-orange"></i>
+        </h2>
+        <div class="w-20 h-1 bg-fenge-green mx-auto"></div>
+        <p class="text-gray-600 max-w-2xl mx-auto mt-4">
+          Confira alguns dos nossos trabalhos recentes em energia solar e piso aquecido na região de Barroso/MG e cidades vizinhas.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
+          <img src="img/solar1.jpg" alt="Usina Solar em Barroso"
+               class="w-full h-48 object-cover" loading="lazy" decoding="async">
+          <div class="p-4 bg-white">
+            <h4 class="font-bold text-fenge-dark">Usina Solar em Barroso</h4>
+            <p class="text-gray-600 text-sm">Potência Instalada 42 kWp</p>
+          </div>
+        </div>
+
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
+          <img src="img/piso1.JPG" alt="Sistema de Aquecimento de Piso em Barroso"
+               class="w-full h-48 object-cover" loading="lazy" decoding="async">
+          <div class="p-4 bg-white">
+            <h4 class="font-bold text-fenge-dark">Sistema de Aquecimento de Piso em Barroso</h4>
+            <p class="text-gray-600 text-sm">Residencial</p>
+          </div>
+        </div>
+
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
+          <img src="img/solar2.JPG" alt="Usina Solar em Barbacena"
+               class="w-full h-48 object-cover" loading="lazy" decoding="async">
+          <div class="p-4 bg-white">
+            <h4 class="font-bold text-fenge-dark">Usina Solar em Barbacena</h4>
+            <p class="text-gray-600 text-sm">Potência Instalada 13,5 kWp</p>
+          </div>
+        </div>
+
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
+          <img src="img/piso2.jpg" alt="Sistema de Aquecimento de Piso em Barbacena"
+               class="w-full h-48 object-cover" loading="lazy" decoding="async">
+          <div class="p-4 bg-white">
+            <h4 class="font-bold text-fenge-dark">Sistema de Aquecimento de Piso em Barbacena</h4>
+            <p class="text-gray-600 text-sm">Residencial</p>
+          </div>
+        </div>
+
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
+          <img src="img/solar3.JPG" alt="Usina Solar em Petrópolis"
+               class="w-full h-48 object-cover" loading="lazy" decoding="async">
+          <div class="p-4 bg-white">
+            <h4 class="font-bold text-fenge-dark">Usina Solar em Petrópolis</h4>
+            <p class="text-gray-600 text-sm">Potência Instalada 8,80 kWp</p>
+          </div>
+        </div>
+
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
+          <img src="img/piso3.jpg" alt="Sistema de Aquecimento de Piso em Tiradentes"
+               class="w-full h-48 object-cover" loading="lazy" decoding="async">
+          <div class="p-4 bg-white">
+            <h4 class="font-bold text-fenge-dark">Sistema de Aquecimento de Piso em Tiradentes</h4>
+            <p class="text-gray-600 text-sm">Pousada</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-12">
+        <a href="#contact" class="inline-flex items-center bg-fenge-orange hover:bg-yellow-500 text-fenge-dark font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+          Quero um projeto como esses
+          <i data-feather="arrow-right" class="ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contato -->
+  <section id="contact" class="py-16 bg-fenge-dark text-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Fale Conosco <i data-feather="mail" class="inline text-fenge-green"></i></h2>
+        <div class="w-20 h-1 bg-fenge-green mx-auto"></div>
+        <p class="max-w-2xl mx-auto mt-4 text-gray-300">
+          Entre em contato para solicitar um orçamento sem compromisso ou tirar suas dúvidas sobre nossos serviços.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-10">
+        <div>
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4 text-fenge-green">Informações de Contato</h3>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <i data-feather="phone" class="text-fenge-orange mr-3 mt-1"></i>
+                <div>
+                  <p class="font-medium">Telefone/WhatsApp</p>
+                  <a href="tel:+553298163279" class="text-lg font-bold hover:text-fenge-orange transition">(32) 9 9816-3279</a>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i data-feather="mail" class="text-fenge-orange mr-3 mt-1"></i>
+                <div>
+                  <p class="font-medium">E-mail</p>
+                  <a href="mailto:contato.fenge@gmail.com" class="text-lg font-bold hover:text-fenge-orange transition">contato.fenge@gmail.com</a>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i data-feather="map-pin" class="text-fenge-orange mr-3 mt-1"></i>
+                <div>
+                  <p class="font-medium">Localização</p>
+                  <p class="text-lg">Barroso/MG e Região</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="text-xl font-bold mb-4 text-fenge-green">Horário de Atendimento</h3>
+          <div class="bg-gray-800 bg-opacity-50 p-4 rounded-lg">
+            <div class="flex justify-between py-2 border-b border-gray-700">
+              <span>Segunda a Sexta</span>
+              <span class="font-medium">08:00 - 18:00</span>
+            </div>
+            <div class="flex justify-between py-2">
+              <span>Sábado</span>
+              <span class="font-medium">09:00 - 12:00</span>
+            </div>
+          </div>
+
+          <div class="mt-8">
+            <h3 class="text-xl font-bold mb-4 text-fenge-green">Redes Sociais</h3>
+            <div class="flex space-x-4">
+              <a href="#" class="bg-gray-800 hover:bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center transition">
+                <i data-feather="facebook" class="text-fenge-orange"></i>
+              </a>
+              <a href="#" class="bg-gray-800 hover:bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center transition">
+                <i data-feather="instagram" class="text-fenge-orange"></i>
+              </a>
+              <a href="#" class="bg-gray-800 hover:bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center transition">
+                <i data-feather="message-square" class="text-fenge-orange"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <form action="https://formsubmit.co/contato.fenge@gmail.com" method="POST" class="bg-gray-800 bg-opacity-50 p-6 rounded-lg">
+            <!-- Configurações extras -->
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://fengeenergia.github.io/fenge-energia-site/?sent=1">
+
+            <div class="mb-4">
+              <label for="name" class="block mb-2 font-medium">Nome</label>
+              <input type="text" name="Nome" id="name" required
+                     class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green">
+            </div>
+
+            <div class="mb-4">
+              <label for="email" class="block mb-2 font-medium">E-mail</label>
+              <input type="email" name="Email" id="email" required
+                     class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green">
+            </div>
+
+            <div class="mb-4">
+              <label for="phone" class="block mb-2 font-medium">Telefone</label>
+              <input type="tel" name="Telefone" id="phone"
+                     class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green">
+            </div>
+
+            <div class="mb-4">
+              <label for="service" class="block mb-2 font-medium">Serviço de Interesse</label>
+              <select name="Serviço" id="service"
+                      class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green">
+                <option>Energia Solar</option>
+                <option>Piso Aquecido</option>
+                <option>Combo Solar + Piso</option>
+                <option>Outros</option>
+              </select>
+            </div>
+
+            <!-- Endereço (Autocomplete) -->
+            <div class="mb-4">
+              <label for="location-input" class="block mb-2 font-medium">Endereço</label>
+              <input id="location-input" name="Endereço" type="text"
+                     class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green"
+                     placeholder="Digite seu endereço">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <input id="locality-input" name="Cidade" type="text" placeholder="Cidade"
+                     class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg">
+              <input id="state-input" name="Estado" type="text" placeholder="Estado"
+                     class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+              <input id="postal-input" name="CEP" type="text" placeholder="CEP"
+                     class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg">
+              <input id="country-input" name="País" type="text" placeholder="País"
+                     class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg">
+            </div>
+
+            <!-- Mapa (preenchido pelo autocomplete) -->
+            <div id="map" class="w-full h-64 rounded-lg shadow-lg mb-6 bg-gray-700/40"></div>
+
+            <div class="mb-6">
+              <label for="message" class="block mb-2 font-medium">Mensagem</label>
+              <textarea name="Mensagem" id="message" rows="4" required
+                        class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-fenge-green"></textarea>
+            </div>
+
+            <button type="submit"
+                    class="w-full bg-fenge-green hover:bg-green-500 text-fenge-dark font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-[1.02]">
+              Enviar Mensagem
+              <i data-feather="send" class="inline ml-2"></i>
+            </button>
+          </form>
+
+          <script>
+            // Mostra aviso quando voltar do FormSubmit com ?sent=1
+            (function () {
+              try {
+                const sent = window.location.search.includes('sent=1');
+                if (sent) {
+                  alert('Mensagem enviada com sucesso! Em breve entraremos em contato.');
+                  const url = new URL(window.location);
+                  url.searchParams.delete('sent');
+                  window.history.replaceState({}, '', url.toString());
+                }
+              } catch(e){}
+            })();
+          </script>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mapa grande (embed) -->
+  <div class="h-96 w-full">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14786.182538452924!2d-43.9843326!3d-21.1860188!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa2a0956f2a7c3b%3A0x570f8a72714f9b60!2sBarroso%2C%20MG%2C%2036212-000!5e0!3m2!1sen!2sbr!4v1681234567890"
+            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <div class="flex items-center">
+            <img src="img/logo-branco.png" alt="Fenge Energia e Soluções"
+                 class="h-20 w-auto mr-3 select-none"/>
+            <span class="text-lg font-bold">Fenge Energia<br/>e Soluções</span>
+          </div>
+        </div>
+
+        <div class="text-center md:text-right">
+          <p class="mb-2">© 2025 Fenge Energia e Soluções. Todos os direitos reservados.</p>
+          <div class="flex justify-center md:justify-end space-x-4 text-sm">
+            <a href="#" class="hover:text-fenge-green transition">Política de Privacidade</a>
+            <a href="#" class="hover:text-fenge-green transition">Termos de Uso</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', function () {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{
+        const href=a.getAttribute('href');
+        if(href && href.length>1){
+          e.preventDefault();
+          document.querySelector(href).scrollIntoView({behavior:'smooth'});
+        }
+      })
+    });
+
+    // Animate on scroll
+    const animateOnScroll = () => {
+      document.querySelectorAll('.feature-card, .gallery-item').forEach(el=>{
+        const pos = el.getBoundingClientRect().top;
+        const screen = window.innerHeight / 1.3;
+        if (pos < screen){ el.style.opacity='1'; el.style.transform='translateY(0)'; }
+      });
+    };
+    document.querySelectorAll('.feature-card, .gallery-item').forEach(el=>{
+      el.style.opacity='0'; el.style.transform='translateY(20px)'; el.style.transition='all .6s ease';
+    });
+    window.addEventListener('load', animateOnScroll);
+    window.addEventListener('scroll', animateOnScroll);
+
+    // Feather icons
+    feather.replace();
+  </script>
+
+  <!-- Botão WhatsApp Flutuante (destacado) -->
+  <a href="https://wa.me/5532998163279?text=Olá!%20Gostaria%20de%20um%20orçamento."
+     class="fixed bottom-6 right-6 md:bottom-8 md:right-8
+            inline-flex items-center gap-3
+            rounded-full p-5 md:p-6
+            bg-gradient-to-r from-green-500 to-emerald-500
+            hover:from-green-600 hover:to-emerald-600
+            text-white shadow-2xl ring-4 ring-green-300 ring-offset-2 ring-offset-transparent
+            transition-all duration-300 transform hover:scale-125 animate-bounce z-50"
+     target="_blank" rel="noopener noreferrer"
+     aria-label="Fale conosco no WhatsApp" title="Fale conosco no WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 md:h-12 md:w-12" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12.001 2.003C6.478 2.003 2 6.48 2 12c0 2.116.553 4.14 1.604 5.928L2 22l4.206-1.556C8.003 21.45 9.95 22 12 22c5.523 0 10.001-4.478 10.001-10s-4.478-9.997-10-9.997h0zM12 20c-1.879 0-3.682-.55-5.21-1.59l-.373-.25-2.493.922.856-2.434-.242-.384C3.88 14.87 3.5 13.463 3.5 12 3.5 7.862 7.362 4 12 4s8.5 3.862 8.5 8c0 4.139-3.862 8-8.5 8zm4.123-5.464c-.225-.112-1.33-.657-1.537-.731-.206-.075-.356-.113-.506.112-.15.225-.581.731-.713.881-.131.15-.262.169-.487.056-.225-.113-.949-.35-1.805-1.115-.667-.596-1.115-1.333-1.246-1.559-.131-.225-.014-.347.099-.46.102-.102.225-.263.337-.394.112-.131.15-.225.225-.375.075-.15.037-.281-.019-.394-.056-.112-.506-1.219-.694-1.669-.182-.438-.367-.38-.506-.388-.131-.006-.281-.007-.431-.007s-.394.056-.6.281c-.206.225-.788.769-.788 1.875s.807 2.174.919 2.325c.112.15 1.591 2.438 3.86 3.418.54.234.961.374 1.29.479.542.173 1.034.149 1.425.09.435-.064 1.33-.544 1.52-1.07.187-.525.187-.975.131-1.07-.056-.094-.206-.15-.431-.262z"/>
+    </svg>
+    <span class="hidden md:inline font-extrabold tracking-tight drop-shadow-sm">Fale no WhatsApp</span>
+  </a>
+</body>
+</html>
 
