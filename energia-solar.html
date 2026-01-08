@@ -590,6 +590,32 @@
     </svg>
     <span class="hidden md:inline font-extrabold tracking-tight drop-shadow-sm">Fale no WhatsApp</span>
   </a>
+
+  <script>
+  (function () {
+    // Descobre qual página está aberta
+    const path = window.location.pathname;
+    const page = path.split('/').pop() || 'index.html';
+
+    // Mapeia páginas para data-menu
+    const pageMap = {
+      'index.html': 'inicio',
+      'energia-solar.html': 'solar',
+      'piso-aquecido.html': 'piso'
+    };
+
+    const currentMenu = pageMap[page];
+    if (!currentMenu) return;
+
+    // Seleciona todos os links com data-menu
+    document.querySelectorAll('[data-menu]').forEach(link => {
+      if (link.dataset.menu === currentMenu) {
+        link.classList.add('menu-active');
+      }
+    });
+  })();
+</script>
+
 </body>
 </html>
 
