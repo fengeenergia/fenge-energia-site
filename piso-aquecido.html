@@ -627,6 +627,7 @@
 
   <!-- Botão WhatsApp Flutuante (destacado) -->
   <a href="https://wa.me/5532998163279?text=Olá!%20Gostaria%20de%20um%20orçamento."
+    onclick="window.dataLayer = window.dataLayer || []; window.dataLayer.push({event: 'whatsapp_click', link_url: this.href});"
      class="fixed bottom-6 right-6 md:bottom-8 md:right-8
             inline-flex items-center gap-3
             rounded-full p-5 md:p-6
